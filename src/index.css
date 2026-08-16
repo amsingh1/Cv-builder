@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ---------- Print / PDF export ---------- */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #cv-preview,
+  #cv-preview * {
+    visibility: visible;
+  }
+
+  #cv-preview {
+    position: absolute;
+    inset: 0;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+}
+
+/* Scrollbar polish for the editor column */
+.editor-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.editor-scroll::-webkit-scrollbar-thumb {
+  background: #cfd8e3;
+  border-radius: 999px;
+}
+.editor-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
