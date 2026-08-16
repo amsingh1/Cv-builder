@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { CVData, emptyCV } from './types'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { sampleCV } from './data/sample'
+import { AI_PROMPT_TEMPLATE, downloadCVData, parseCVData } from './utils/cvIO'
 import { PersonalForm } from './components/editor/PersonalForm'
 import { ExperienceForm } from './components/editor/ExperienceForm'
 import { EducationForm } from './components/editor/EducationForm'
@@ -10,10 +11,13 @@ import { LanguagesForm } from './components/editor/LanguagesForm'
 import { CertificationsForm } from './components/editor/CertificationsForm'
 import { ProjectsForm } from './components/editor/ProjectsForm'
 import { CVPreview } from './components/preview/CVPreview'
+import { Dropdown, DropdownDivider, DropdownItem } from './components/Dropdown'
 
 export default function App() {
   const [data, setData] = useLocalStorage<CVData>('cv-builder:data', emptyCV)
   const [confirmingClear, setConfirmingClear] = useState(false)
+  const [promptCopied, setPromptCopied] = useState(false)
+  const fileInput = useRef<HTMLInputElement>(null)
 
   function loadSample() {
     if (
@@ -30,6 +34,51 @@ export default function App() {
     setConfirmingClear(false)
   }
 
+  function handleUploadClick() {
+    fileInput.current?.click()
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const parsed = parseCVData(reader.result as string)
+        if (
+          confirm(
+            'Load this JSON into the builder? This will replace what you currently have in the form.',
+          )
+        ) {
+          setData(parsed)
+        }
+      } catch (err) {
+        alert(err instanceof Error ? err.message : 'Could not read that file.')
+      }
+    }
+    reader.readAsText(file)
+  }
+
+  async function copyPrompt() {
+    try {
+      await navigator.clipboard.writeText(AI_PROMPT_TEMPLATE)
+      setPromptCopied(true)
+      setTimeout(() => setPromptCopied(false), 2000)
+    } catch {
+      alert('Could not copy to clipboard. Your browser may be blocking clipboard access.')
+    }
+  }
+
+  function handlePrint() {
+    const previousTitle = document.title
+    document.title = data.personal.fullName ? `${data.personal.fullName} - CV` : 'CV'
+    window.print()
+    setTimeout(() => {
+      document.title = previousTitle
+    }, 0)
+  }
+
   return (
     <div className="min-h-screen bg-ink-50">
       <header className="print-hidden sticky top-0 z-10 border-b border-ink-100 bg-white/90 backdrop-blur">
@@ -41,13 +90,27 @@ export default function App() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={loadSample}
-              className="rounded-lg px-3 py-2 text-xs font-medium text-ink-500 hover:bg-ink-50"
-            >
-              Load example
-            </button>
-            {confirmingClear ? (
+            <Dropdown label="Data">
+              <DropdownItem onClick={copyPrompt}>
+                {promptCopied ? 'Copied!' : 'Copy prompt for Claude…'}
+              </DropdownItem>
+              <DropdownItem onClick={handleUploadClick}>Upload JSON</DropdownItem>
+              <DropdownItem onClick={() => downloadCVData(data)}>Download JSON</DropdownItem>
+              <DropdownDivider />
+              <DropdownItem onClick={loadSample}>Load example</DropdownItem>
+              <DropdownDivider />
+              <DropdownItem danger onClick={() => setConfirmingClear(true)}>
+                Clear all
+              </DropdownItem>
+            </Dropdown>
+            <input
+              ref={fileInput}
+              type="file"
+              accept="application/json,.json"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            {confirmingClear && (
               <div className="flex items-center gap-1.5 text-xs">
                 <span className="text-ink-500">Clear everything?</span>
                 <button
@@ -63,16 +126,9 @@ export default function App() {
                   Cancel
                 </button>
               </div>
-            ) : (
-              <button
-                onClick={() => setConfirmingClear(true)}
-                className="rounded-lg px-3 py-2 text-xs font-medium text-ink-500 hover:bg-ink-50"
-              >
-                Clear all
-              </button>
             )}
             <button
-              onClick={() => window.print()}
+              onClick={handlePrint}
               className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-4 py-2 text-xs font-semibold text-white hover:bg-ink-700"
             >
               <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
