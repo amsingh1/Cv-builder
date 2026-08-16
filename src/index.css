@@ -51,6 +51,24 @@ html {
   .print-hidden {
     display: none !important;
   }
+
+  /* The mobile Edit/Preview tabs and the fit-to-width scaling wrapper
+     (see ScaledPreview) are screen-only conveniences — always show the
+     preview panel at full, untransformed size when actually printing,
+     regardless of which tab is active or how narrow the screen is. */
+  .cv-preview-panel {
+    display: block !important;
+  }
+
+  .preview-scale-shell {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .preview-scale-inner {
+    transform: none !important;
+  }
 }
 
 /* Scrollbar polish for the editor column */

@@ -10,13 +10,16 @@ import { SkillsForm } from './components/editor/SkillsForm'
 import { LanguagesForm } from './components/editor/LanguagesForm'
 import { CertificationsForm } from './components/editor/CertificationsForm'
 import { ProjectsForm } from './components/editor/ProjectsForm'
-import { CVPreview } from './components/preview/CVPreview'
+import { ScaledPreview } from './components/preview/ScaledPreview'
 import { Dropdown, DropdownDivider, DropdownItem } from './components/Dropdown'
+
+type MobileTab = 'edit' | 'preview'
 
 export default function App() {
   const [data, setData] = useLocalStorage<CVData>('cv-builder:data', emptyCV)
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
+  const [mobileTab, setMobileTab] = useState<MobileTab>('edit')
   const fileInput = useRef<HTMLInputElement>(null)
 
   function loadSample() {
@@ -82,14 +85,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-ink-50">
       <header className="print-hidden sticky top-0 z-10 border-b border-ink-100 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-6 py-3">
-          <div>
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <div className="min-w-0">
             <h1 className="text-base font-bold text-ink-800">CV Builder</h1>
-            <p className="text-xs text-ink-400">
+            <p className="hidden truncate text-xs text-ink-400 sm:block">
               Everything stays in your browser — nothing is uploaded anywhere.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <Dropdown label="Data">
               <DropdownItem onClick={copyPrompt}>
                 {promptCopied ? 'Copied!' : 'Copy prompt for Claude…'}
@@ -112,7 +115,7 @@ export default function App() {
             />
             {confirmingClear && (
               <div className="flex items-center gap-1.5 text-xs">
-                <span className="text-ink-500">Clear everything?</span>
+                <span className="hidden text-ink-500 sm:inline">Clear everything?</span>
                 <button
                   onClick={clearAll}
                   className="rounded-lg bg-red-500 px-2.5 py-1.5 font-medium text-white hover:bg-red-600"
@@ -129,23 +132,48 @@ export default function App() {
             )}
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-4 py-2 text-xs font-semibold text-white hover:bg-ink-700"
+              className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-3 py-2 text-xs font-semibold text-white hover:bg-ink-700 sm:px-4"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+              <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
                   d="M5 2.75C5 1.784 5.784 1 6.75 1h6.5c.966 0 1.75.784 1.75 1.75v3.552c.377.046.752.097 1.126.153A2.212 2.212 0 0118 8.653v4.097A2.25 2.25 0 0115.75 15h-.241l.305 2.443a.75.75 0 01-.744.807H4.93a.75.75 0 01-.744-.807L4.491 15H4.25A2.25 2.25 0 012 12.75V8.653c0-1.082.775-2.008 1.874-2.198.374-.056.75-.107 1.126-.153V2.75zm8.5 3.397a41.533 41.533 0 00-7 0V2.75a.25.25 0 01.25-.25h6.5a.25.25 0 01.25.25v3.397zM6.06 15l-.262 2.5h8.404L14 15H6.06z"
                   clipRule="evenodd"
                 />
               </svg>
-              Download PDF
+              <span className="hidden sm:inline">Download PDF</span>
+              <span className="sm:hidden">PDF</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Edit/Preview switcher — only needed once the two columns no longer fit side by side */}
+        <div className="border-t border-ink-100 px-4 py-2 sm:px-6 lg:hidden">
+          <div className="flex gap-1 rounded-lg bg-ink-50 p-1">
+            <button
+              onClick={() => setMobileTab('edit')}
+              className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition-colors ${
+                mobileTab === 'edit' ? 'bg-white text-ink-800 shadow-sm' : 'text-ink-500'
+              }`}
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => setMobileTab('preview')}
+              className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition-colors ${
+                mobileTab === 'preview' ? 'bg-white text-ink-800 shadow-sm' : 'text-ink-500'
+              }`}
+            >
+              Preview
             </button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto flex max-w-[1400px] gap-6 px-6 py-6">
-        <div className="print-hidden editor-scroll w-[460px] shrink-0 space-y-4 overflow-y-auto pb-24 lg:sticky lg:top-[76px] lg:max-h-[calc(100vh-92px)]">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row">
+        <div
+          className={`${mobileTab === 'edit' ? 'block' : 'hidden'} print-hidden editor-scroll w-full space-y-4 pb-24 lg:block lg:sticky lg:top-[76px] lg:max-h-[calc(100vh-92px)] lg:w-[460px] lg:shrink-0 lg:overflow-y-auto`}
+        >
           <PersonalForm data={data.personal} onChange={(personal) => setData({ ...data, personal })} />
           <ExperienceForm
             data={data.experience}
@@ -161,8 +189,10 @@ export default function App() {
           <ProjectsForm data={data.projects} onChange={(projects) => setData({ ...data, projects })} />
         </div>
 
-        <div className="min-w-0 flex-1 overflow-x-auto pb-24">
-          <CVPreview data={data} />
+        <div
+          className={`cv-preview-panel ${mobileTab === 'preview' ? 'block' : 'hidden'} min-w-0 pb-24 lg:block lg:flex-1`}
+        >
+          <ScaledPreview data={data} />
         </div>
       </div>
     </div>

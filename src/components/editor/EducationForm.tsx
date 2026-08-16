@@ -36,7 +36,7 @@ export function EducationForm({
     <Section title="Education" subtitle="Most recent first.">
       {data.map((entry) => (
         <EntryCard key={entry.id} onRemove={() => remove(entry.id)}>
-          <div className="grid grid-cols-2 gap-3 pr-6">
+          <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
             <Field
               label="Degree"
               value={entry.degree}

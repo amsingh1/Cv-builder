@@ -25,7 +25,7 @@ export function CertificationsForm({
     <Section title="Certifications" subtitle="Optional.">
       {data.map((cert) => (
         <EntryCard key={cert.id} onRemove={() => remove(cert.id)}>
-          <div className="grid grid-cols-2 gap-3 pr-6">
+          <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
             <Field
               label="Certification"
               value={cert.name}
