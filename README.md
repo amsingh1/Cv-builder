@@ -7,7 +7,8 @@ A modern, European-standard CV builder that runs entirely in your browser — no
 ## Features
 
 - Every field is optional — personal details, photo, contact info, LinkedIn/GitHub/website, summary, work experience, education, skills (with level bars), languages (CEFR scale), certifications and projects, each addable/removable freely
-- Live, modern two-column CV preview (photo sidebar + main content) sized to A4
+- **5 selectable designs** (pick via the swatches above the preview) — Vibrant Blue, Classic Navy, Warm Ivory, Minimal (single-column, ATS-friendly), and Editorial (serif) — your choice is remembered
+- Live preview sized to A4, auto-scaled to fit any screen width
 - One-click **Download PDF** using the browser's native print-to-PDF, so the output is real, crisp, selectable text — not a screenshot
 - Your data is saved to `localStorage` automatically, so a refresh won't lose your work
 - "Load example" button to see a filled-out CV, and "Clear all" to start over
@@ -27,6 +28,7 @@ A modern, European-standard CV builder that runs entirely in your browser — no
 - **Tailwind CSS** for styling
 - No PDF/canvas libraries — PDF export uses `window.print()` with dedicated print CSS in `src/index.css`, which produces a proper vector PDF via the browser's built-in "Save as PDF"
 - Deployed automatically to **GitHub Pages** via the workflow in `.github/workflows/deploy.yml`
+- Each design lives in its own file under `src/templates/` and is listed in `src/templates/registry.ts` — add a new file there and register it to add another design
 
 ## Deployment (one-time setup)
 

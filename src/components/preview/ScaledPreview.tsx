@@ -1,15 +1,21 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { ComponentType, useLayoutEffect, useRef, useState } from 'react'
 import { CVData } from '../../types'
-import { CVPreview } from './CVPreview'
 
 /**
- * Renders the A4 CVPreview at whatever width its container has, by measuring
- * the preview's true (unscaled) size and applying a CSS transform to fit —
- * so it never needs horizontal scrolling on narrow screens. The scale
- * transform is neutralized in print CSS (see .preview-scale-shell /
- * .preview-scale-inner in index.css) so exported PDFs stay full size.
+ * Renders the given CV template component at whatever width its container
+ * has, by measuring the preview's true (unscaled) size and applying a CSS
+ * transform to fit — so it never needs horizontal scrolling on narrow
+ * screens. The scale transform is neutralized in print CSS (see
+ * .preview-scale-shell / .preview-scale-inner in index.css) so exported
+ * PDFs stay full size.
  */
-export function ScaledPreview({ data }: { data: CVData }) {
+export function ScaledPreview({
+  data,
+  Template,
+}: {
+  data: CVData
+  Template: ComponentType<{ data: CVData }>
+}) {
   const outerRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
@@ -47,7 +53,7 @@ export function ScaledPreview({ data }: { data: CVData }) {
         className="preview-scale-inner"
         style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}
       >
-        <CVPreview data={data} />
+        <Template data={data} />
       </div>
     </div>
   )

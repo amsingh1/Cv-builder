@@ -12,6 +12,7 @@ import { CertificationsForm } from './components/editor/CertificationsForm'
 import { ProjectsForm } from './components/editor/ProjectsForm'
 import { ScaledPreview } from './components/preview/ScaledPreview'
 import { Dropdown, DropdownDivider, DropdownItem } from './components/Dropdown'
+import { DEFAULT_TEMPLATE_ID, TEMPLATES, getTemplate } from './templates/registry'
 
 type MobileTab = 'edit' | 'preview'
 
@@ -20,7 +21,9 @@ export default function App() {
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
   const [mobileTab, setMobileTab] = useState<MobileTab>('edit')
+  const [templateId, setTemplateId] = useLocalStorage<string>('cv-builder:template', DEFAULT_TEMPLATE_ID)
   const fileInput = useRef<HTMLInputElement>(null)
+  const selectedTemplate = getTemplate(templateId)
 
   function loadSample() {
     if (
@@ -192,7 +195,28 @@ export default function App() {
         <div
           className={`cv-preview-panel ${mobileTab === 'preview' ? 'block' : 'hidden'} min-w-0 pb-24 lg:block lg:flex-1`}
         >
-          <ScaledPreview data={data} />
+          <div className="print-hidden mb-4 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+            <span className="text-xs font-medium text-ink-500">Design:</span>
+            {TEMPLATES.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setTemplateId(t.id)}
+                title={t.name}
+                aria-label={t.name}
+                className={`h-8 w-8 shrink-0 overflow-hidden rounded-md border transition ${
+                  templateId === t.id
+                    ? 'border-ink-800 ring-2 ring-ink-800 ring-offset-1'
+                    : 'border-ink-200 hover:border-ink-400'
+                }`}
+                style={{
+                  background: `linear-gradient(135deg, ${t.swatch[0]} 0%, ${t.swatch[0]} 50%, ${t.swatch[1]} 50%, ${t.swatch[1]} 100%)`,
+                }}
+              />
+            ))}
+            <span className="text-xs text-ink-500">{selectedTemplate.name}</span>
+          </div>
+          <ScaledPreview data={data} Template={selectedTemplate.component} />
         </div>
       </div>
     </div>
