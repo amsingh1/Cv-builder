@@ -11,7 +11,7 @@ function initials(name: string) {
 
 function SidebarHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-gold-300">
+    <h3 className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-sky-300">
       {children}
     </h3>
   )
@@ -19,7 +19,7 @@ function SidebarHeading({ children }: { children: React.ReactNode }) {
 
 function MainHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-3 border-b-2 border-terracotta-500 pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-espresso-800">
+    <h3 className="mb-3 border-b-2 border-sky-500 pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-navy-800">
       {children}
     </h3>
   )
@@ -31,7 +31,7 @@ function LevelBar({ value, max }: { value: number; max: number }) {
       {Array.from({ length: max }).map((_, i) => (
         <span
           key={i}
-          className={`h-1 flex-1 rounded-full ${i < value ? 'bg-terracotta-400' : 'bg-white/15'}`}
+          className={`h-1 flex-1 rounded-full ${i < value ? 'bg-sky-400' : 'bg-white/15'}`}
         />
       ))}
     </div>
@@ -63,23 +63,23 @@ export function CVPreview({ data }: { data: CVData }) {
   return (
     <div
       id="cv-preview"
-      className="mx-auto flex flex-col overflow-hidden rounded-lg bg-cream-50 text-espresso-800 shadow-xl"
+      className="mx-auto flex flex-col overflow-hidden rounded-lg bg-cream-50 text-navy-800 shadow-xl"
       style={{ width: '210mm', minHeight: '297mm' }}
     >
-      <div className="h-2 w-full shrink-0 bg-gradient-to-r from-terracotta-600 via-terracotta-400 to-gold-400" />
+      <div className="h-2 w-full shrink-0 bg-gradient-to-r from-navy-800 via-sky-500 to-sky-300" />
 
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside
-          className="flex w-[72mm] shrink-0 flex-col gap-6 bg-espresso-900 px-6 py-8 text-cream-100"
+          className="flex w-[72mm] shrink-0 flex-col gap-6 bg-navy-900 px-6 py-8 text-cream-100"
           style={{ fontSize: '9.5px' }}
         >
           <div className="flex flex-col items-center text-center">
-            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-gold-400/40 bg-espresso-700">
+            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-sky-400/40 bg-navy-700">
               {p.photo ? (
                 <img src={p.photo} alt={p.fullName || 'Profile'} className="h-full w-full object-cover" />
               ) : (
-                <span className="text-3xl font-semibold text-gold-200">
+                <span className="text-3xl font-semibold text-sky-200">
                   {initials(p.fullName) || ''}
                 </span>
               )}
@@ -88,7 +88,7 @@ export function CVPreview({ data }: { data: CVData }) {
               <h1 className="mt-4 text-[15px] font-bold leading-tight text-cream-50">{p.fullName}</h1>
             )}
             {p.jobTitle && (
-              <p className="mt-1 text-[10px] font-medium uppercase tracking-wide text-terracotta-300">
+              <p className="mt-1 text-[10px] font-medium uppercase tracking-wide text-sky-300">
                 {p.jobTitle}
               </p>
             )}
@@ -114,17 +114,17 @@ export function CVPreview({ data }: { data: CVData }) {
               <ul className="space-y-1.5 text-cream-100">
                 {p.dateOfBirth && (
                   <li>
-                    <span className="text-gold-300/80">Born:</span> {p.dateOfBirth}
+                    <span className="text-sky-300/80">Born:</span> {p.dateOfBirth}
                   </li>
                 )}
                 {p.nationality && (
                   <li>
-                    <span className="text-gold-300/80">Nationality:</span> {p.nationality}
+                    <span className="text-sky-300/80">Nationality:</span> {p.nationality}
                   </li>
                 )}
                 {p.drivingLicence && (
                   <li>
-                    <span className="text-gold-300/80">Licence:</span> {p.drivingLicence}
+                    <span className="text-sky-300/80">Licence:</span> {p.drivingLicence}
                   </li>
                 )}
               </ul>
@@ -153,7 +153,7 @@ export function CVPreview({ data }: { data: CVData }) {
                   <li key={l.id}>
                     <div className="flex items-baseline justify-between">
                       <span>{l.name}</span>
-                      <span className="text-gold-300/80">{l.level}</span>
+                      <span className="text-sky-300/80">{l.level}</span>
                     </div>
                     <LevelBar value={LANG_LEVEL_VALUE[l.level] ?? 0} max={6} />
                   </li>
@@ -184,7 +184,7 @@ export function CVPreview({ data }: { data: CVData }) {
           {p.summary && (
             <section className="mb-6">
               <MainHeading>Profile</MainHeading>
-              <p className="leading-relaxed text-espresso-600">{p.summary}</p>
+              <p className="leading-relaxed text-navy-600">{p.summary}</p>
             </section>
           )}
 
@@ -195,22 +195,22 @@ export function CVPreview({ data }: { data: CVData }) {
                 {data.experience.map((e) => (
                   <div key={e.id}>
                     <div className="flex items-baseline justify-between gap-3">
-                      <p className="font-semibold text-espresso-800">
+                      <p className="font-semibold text-navy-800">
                         {e.role}
                         {e.role && e.company ? ' · ' : ''}
-                        <span className="font-medium text-terracotta-600">{e.company}</span>
+                        <span className="font-medium text-sky-500">{e.company}</span>
                       </p>
                       {(e.startDate || e.endDate || e.current) && (
-                        <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-espresso-400">
+                        <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-navy-400">
                           {e.startDate}
                           {e.startDate && (e.endDate || e.current) ? ' – ' : ''}
                           {e.current ? 'Present' : e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-espresso-400">{e.location}</p>}
+                    {e.location && <p className="text-[9px] text-navy-400">{e.location}</p>}
                     {e.description && (
-                      <p className="mt-1 whitespace-pre-line leading-relaxed text-espresso-600">
+                      <p className="mt-1 whitespace-pre-line leading-relaxed text-navy-600">
                         {e.description}
                       </p>
                     )}
@@ -227,22 +227,22 @@ export function CVPreview({ data }: { data: CVData }) {
                 {data.education.map((e) => (
                   <div key={e.id}>
                     <div className="flex items-baseline justify-between gap-3">
-                      <p className="font-semibold text-espresso-800">
+                      <p className="font-semibold text-navy-800">
                         {e.degree}
                         {e.degree && e.institution ? ' · ' : ''}
-                        <span className="font-medium text-terracotta-600">{e.institution}</span>
+                        <span className="font-medium text-sky-500">{e.institution}</span>
                       </p>
                       {(e.startDate || e.endDate) && (
-                        <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-espresso-400">
+                        <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-navy-400">
                           {e.startDate}
                           {e.startDate && e.endDate ? ' – ' : ''}
                           {e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-espresso-400">{e.location}</p>}
+                    {e.location && <p className="text-[9px] text-navy-400">{e.location}</p>}
                     {e.description && (
-                      <p className="mt-1 whitespace-pre-line leading-relaxed text-espresso-600">
+                      <p className="mt-1 whitespace-pre-line leading-relaxed text-navy-600">
                         {e.description}
                       </p>
                     )}
@@ -258,14 +258,12 @@ export function CVPreview({ data }: { data: CVData }) {
               <div className="space-y-4">
                 {data.projects.map((proj) => (
                   <div key={proj.id}>
-                    <p className="font-semibold text-espresso-800">
+                    <p className="font-semibold text-navy-800">
                       {proj.name}
-                      {proj.link && (
-                        <span className="ml-2 font-normal text-terracotta-600">{proj.link}</span>
-                      )}
+                      {proj.link && <span className="ml-2 font-normal text-sky-500">{proj.link}</span>}
                     </p>
                     {proj.description && (
-                      <p className="mt-1 whitespace-pre-line leading-relaxed text-espresso-600">
+                      <p className="mt-1 whitespace-pre-line leading-relaxed text-navy-600">
                         {proj.description}
                       </p>
                     )}
@@ -279,7 +277,7 @@ export function CVPreview({ data }: { data: CVData }) {
             data.experience.length === 0 &&
             data.education.length === 0 &&
             data.projects.length === 0 && (
-              <div className="flex h-full items-center justify-center text-center text-espresso-400/60">
+              <div className="flex h-full items-center justify-center text-center text-navy-400/60">
                 <p className="max-w-xs text-sm leading-relaxed">
                   Start filling in the form on the left — your CV will take shape here in real time.
                 </p>
