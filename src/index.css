@@ -20,6 +20,15 @@ html {
     background: #fff;
   }
 
+  /* Without this, Chrome (especially on mobile/Android) silently drops
+     every CSS background color/gradient from the printed PDF, leaving
+     only text — this forces backgrounds to actually print. */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
   body * {
     visibility: hidden;
   }
