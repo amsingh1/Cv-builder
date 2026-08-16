@@ -37,7 +37,7 @@ export function ExperienceForm({
     <Section title="Work experience" subtitle="Most recent first.">
       {data.map((entry) => (
         <EntryCard key={entry.id} onRemove={() => remove(entry.id)}>
-          <div className="grid grid-cols-2 gap-3 pr-6">
+          <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
             <Field
               label="Role"
               value={entry.role}

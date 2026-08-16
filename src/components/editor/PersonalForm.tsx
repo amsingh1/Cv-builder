@@ -69,7 +69,7 @@ export function PersonalForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field
           label="Full name"
           value={data.fullName}
@@ -136,7 +136,7 @@ export function PersonalForm({
           value={data.website}
           onChange={(e) => set('website', e.target.value)}
           placeholder="alexmuller.dev"
-          className="col-span-2"
+          className="sm:col-span-2"
         />
       </div>
 

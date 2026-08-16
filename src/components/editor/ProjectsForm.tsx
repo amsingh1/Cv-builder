@@ -25,7 +25,7 @@ export function ProjectsForm({
     <Section title="Projects" subtitle="Optional — good for portfolio pieces." defaultOpen={false}>
       {data.map((project) => (
         <EntryCard key={project.id} onRemove={() => remove(project.id)}>
-          <div className="grid grid-cols-2 gap-3 pr-6">
+          <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
             <Field
               label="Project name"
               value={project.name}
