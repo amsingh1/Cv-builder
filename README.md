@@ -11,6 +11,15 @@ A modern, European-standard CV builder that runs entirely in your browser — no
 - One-click **Download PDF** using the browser's native print-to-PDF, so the output is real, crisp, selectable text — not a screenshot
 - Your data is saved to `localStorage` automatically, so a refresh won't lose your work
 - "Load example" button to see a filled-out CV, and "Clear all" to start over
+- **Data ▾ menu**: copy a ready-made prompt for Claude (or any AI) that asks it to write your CV content and hand it back as JSON, upload that JSON straight into the builder, or download your current data as JSON to back up/edit/reuse later
+
+### Building your CV content with Claude
+
+1. Open the **Data ▾** menu → **Copy prompt for Claude…**
+2. Paste it into a chat with Claude, answer its follow-up questions about your background
+3. Claude replies with a JSON file matching the builder's schema
+4. Save that as a `.json` file, then **Data ▾ → Upload JSON** to drop it straight into the form
+5. Add your photo and fine-tune anything by hand, then **Download PDF**
 
 ## Tech stack
 
