@@ -3,7 +3,7 @@ import { LANG_LEVEL_VALUE, SKILL_LEVEL_VALUE, initials, lines } from './shared'
 
 function SidebarHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-[#e6cc9b]">
+    <h3 className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-[#f0d9a8]">
       {children}
     </h3>
   )
@@ -11,7 +11,7 @@ function SidebarHeading({ children }: { children: React.ReactNode }) {
 
 function MainHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-3 border-b-2 border-[#c1694f] pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-[#3a2f24]">
+    <h3 className="mb-3 border-b-2 border-[#c1502f] pb-1 text-[13.5px] font-bold uppercase tracking-[0.1em] text-[#2b2015]">
       {children}
     </h3>
   )
@@ -23,7 +23,7 @@ function LevelBar({ value, max }: { value: number; max: number }) {
       {Array.from({ length: max }).map((_, i) => (
         <span
           key={i}
-          className={`h-1 flex-1 rounded-full ${i < value ? 'bg-[#cf7d5f]' : 'bg-white/15'}`}
+          className={`h-1 flex-1 rounded-full ${i < value ? 'bg-[#d9713f]' : 'bg-white/15'}`}
         />
       ))}
     </div>
@@ -37,7 +37,7 @@ function BulletList({ text }: { text: string }) {
     <ul className="mt-1.5 space-y-1">
       {items.map((line, i) => (
         <li key={i} className="flex gap-2 leading-relaxed text-stone-700">
-          <span className="mt-[6px] h-1 w-1 shrink-0 rounded-full bg-[#c1694f]" />
+          <span className="mt-[6px] h-1 w-1 shrink-0 rounded-full bg-[#c1502f]" />
           <span>{line}</span>
         </li>
       ))}
@@ -56,13 +56,13 @@ export function WarmIvory({ data }: { data: CVData }) {
       className="mx-auto flex flex-col overflow-hidden rounded-lg bg-[#fdfaf5] text-stone-800 shadow-xl"
       style={{ width: '210mm', minHeight: '297mm' }}
     >
-      <div className="h-2 w-full shrink-0 bg-gradient-to-r from-[#b5602f] via-[#c1694f] to-[#d9b878]" />
+      <div className="h-2 w-full shrink-0 bg-gradient-to-r from-[#b8501f] via-[#c1502f] to-[#d9b878]" />
 
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside
           className="flex w-[72mm] shrink-0 flex-col gap-6 bg-[#2a2119] px-6 py-8 text-[#f7efe1]"
-          style={{ fontSize: '9.5px' }}
+          style={{ fontSize: '10.5px' }}
         >
           <div className="flex flex-col items-center text-center">
             <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-[#d9b878]/40 bg-[#4a3c2d]">
@@ -75,10 +75,10 @@ export function WarmIvory({ data }: { data: CVData }) {
               )}
             </div>
             {p.fullName && (
-              <h1 className="mt-4 text-[15px] font-bold leading-tight text-[#fdfaf5]">{p.fullName}</h1>
+              <h1 className="mt-4 text-[17px] font-bold leading-tight text-[#fdfaf5]">{p.fullName}</h1>
             )}
             {p.jobTitle && (
-              <p className="mt-1 text-[10px] font-medium uppercase tracking-wide text-[#e2a688]">
+              <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-[#e2a688]">
                 {p.jobTitle}
               </p>
             )}
@@ -168,7 +168,7 @@ export function WarmIvory({ data }: { data: CVData }) {
         </aside>
 
         {/* Main column */}
-        <main className="flex-1 bg-[#fdfaf5] px-8 py-8" style={{ fontSize: '10px' }}>
+        <main className="flex-1 bg-[#fdfaf5] px-8 py-8" style={{ fontSize: '11px' }}>
           {p.summary && (
             <section className="mb-6">
               <MainHeading>Profile</MainHeading>
@@ -186,17 +186,17 @@ export function WarmIvory({ data }: { data: CVData }) {
                       <p className="font-semibold text-[#3a2f24]">
                         {e.role}
                         {e.role && e.company ? ' · ' : ''}
-                        <span className="font-medium text-[#b5602f]">{e.company}</span>
+                        <span className="font-medium text-[#b8501f]">{e.company}</span>
                       </p>
                       {(e.startDate || e.endDate || e.current) && (
-                        <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-stone-400">
+                        <p className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-stone-400">
                           {e.startDate}
                           {e.startDate && (e.endDate || e.current) ? ' – ' : ''}
                           {e.current ? 'Present' : e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-stone-400">{e.location}</p>}
+                    {e.location && <p className="text-[10px] text-stone-400">{e.location}</p>}
                     <BulletList text={e.description} />
                   </div>
                 ))}
@@ -214,17 +214,17 @@ export function WarmIvory({ data }: { data: CVData }) {
                       <p className="font-semibold text-[#3a2f24]">
                         {e.degree}
                         {e.degree && e.institution ? ' · ' : ''}
-                        <span className="font-medium text-[#b5602f]">{e.institution}</span>
+                        <span className="font-medium text-[#b8501f]">{e.institution}</span>
                       </p>
                       {(e.startDate || e.endDate) && (
-                        <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-stone-400">
+                        <p className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-stone-400">
                           {e.startDate}
                           {e.startDate && e.endDate ? ' – ' : ''}
                           {e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-stone-400">{e.location}</p>}
+                    {e.location && <p className="text-[10px] text-stone-400">{e.location}</p>}
                     <BulletList text={e.description} />
                   </div>
                 ))}
@@ -240,7 +240,7 @@ export function WarmIvory({ data }: { data: CVData }) {
                   <div key={proj.id}>
                     <p className="font-semibold text-[#3a2f24]">
                       {proj.name}
-                      {proj.link && <span className="ml-2 font-normal text-[#b5602f]">{proj.link}</span>}
+                      {proj.link && <span className="ml-2 font-normal text-[#b8501f]">{proj.link}</span>}
                     </p>
                     <BulletList text={proj.description} />
                   </div>

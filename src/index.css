@@ -40,10 +40,12 @@ html {
 
   #cv-preview {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 210mm;
     min-height: 297mm;
     margin: 0;
+    overflow: visible !important;
     box-shadow: none !important;
     border-radius: 0 !important;
   }
