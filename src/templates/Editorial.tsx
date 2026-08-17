@@ -6,7 +6,7 @@ const WINE = '#7a2e38'
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <h3
-      className="mb-3 text-center font-serif text-[12px] font-semibold uppercase tracking-[0.25em]"
+      className="mb-3 text-center font-serif text-[13.5px] font-semibold uppercase tracking-[0.25em]"
       style={{ color: WINE }}
     >
       {children}
@@ -45,7 +45,7 @@ export function Editorial({ data }: { data: CVData }) {
       className="mx-auto overflow-hidden bg-[#fffdf9] text-stone-800 shadow-xl"
       style={{ width: '210mm', minHeight: '297mm' }}
     >
-      <div className="px-14 py-12" style={{ fontSize: '10px' }}>
+      <div className="px-14 py-12" style={{ fontSize: '11px' }}>
         {/* Header */}
         <div className="flex flex-col items-center text-center">
           {p.photo && (
@@ -57,15 +57,15 @@ export function Editorial({ data }: { data: CVData }) {
             />
           )}
           {p.fullName && (
-            <h1 className="font-serif text-[26px] font-semibold tracking-wide text-stone-900">
+            <h1 className="font-serif text-[29px] font-semibold tracking-wide text-stone-900">
               {p.fullName}
             </h1>
           )}
           {p.jobTitle && (
-            <p className="mt-1 font-serif text-[12px] italic text-stone-500">{p.jobTitle}</p>
+            <p className="mt-1 font-serif text-[13px] italic text-stone-500">{p.jobTitle}</p>
           )}
           {(contactItems.length > 0 || detailItems.length > 0) && (
-            <p className="mt-3 text-[9px] uppercase tracking-[0.1em] text-stone-500">
+            <p className="mt-3 text-[10px] uppercase tracking-[0.1em] text-stone-500">
               {[...contactItems, ...detailItems].join('   ·   ')}
             </p>
           )}
@@ -93,14 +93,14 @@ export function Editorial({ data }: { data: CVData }) {
                         <span className="font-normal text-stone-600">{e.company}</span>
                       </p>
                       {(e.startDate || e.endDate || e.current) && (
-                        <p className="shrink-0 text-[9px] italic text-stone-400">
+                        <p className="shrink-0 text-[10px] italic text-stone-400">
                           {e.startDate}
                           {e.startDate && (e.endDate || e.current) ? ' – ' : ''}
                           {e.current ? 'Present' : e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-stone-400">{e.location}</p>}
+                    {e.location && <p className="text-[10px] text-stone-400">{e.location}</p>}
                     <BulletList text={e.description} />
                   </div>
                 ))}
@@ -121,14 +121,14 @@ export function Editorial({ data }: { data: CVData }) {
                         <span className="font-normal text-stone-600">{e.institution}</span>
                       </p>
                       {(e.startDate || e.endDate) && (
-                        <p className="shrink-0 text-[9px] italic text-stone-400">
+                        <p className="shrink-0 text-[10px] italic text-stone-400">
                           {e.startDate}
                           {e.startDate && e.endDate ? ' – ' : ''}
                           {e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-stone-400">{e.location}</p>}
+                    {e.location && <p className="text-[10px] text-stone-400">{e.location}</p>}
                     <BulletList text={e.description} />
                   </div>
                 ))}

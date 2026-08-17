@@ -3,7 +3,7 @@ import { LANG_LEVEL_VALUE, SKILL_LEVEL_VALUE, initials, lines } from './shared'
 
 function SidebarHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-[#8ed4ee]">
+    <h3 className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-[#8ed4ee]">
       {children}
     </h3>
   )
@@ -11,7 +11,7 @@ function SidebarHeading({ children }: { children: React.ReactNode }) {
 
 function MainHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-3 border-b-2 border-[#2fa8d5] pb-1 text-[12px] font-bold uppercase tracking-[0.1em] text-[#132a42]">
+    <h3 className="mb-3 border-b-2 border-[#2fa8d5] pb-1 text-[13.5px] font-bold uppercase tracking-[0.1em] text-[#132a42]">
       {children}
     </h3>
   )
@@ -59,7 +59,7 @@ export function ClassicNavy({ data }: { data: CVData }) {
       {/* Sidebar */}
       <aside
         className="flex w-[72mm] shrink-0 flex-col gap-6 bg-[#132a42] px-6 py-8 text-[#f7efe1]"
-        style={{ fontSize: '9.5px' }}
+        style={{ fontSize: '10.5px' }}
       >
         <div className="flex flex-col items-center text-center">
           <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-2 border-[#4fc0e8]/40 bg-[#254b73]">
@@ -70,10 +70,10 @@ export function ClassicNavy({ data }: { data: CVData }) {
             )}
           </div>
           {p.fullName && (
-            <h1 className="mt-4 text-[15px] font-bold leading-tight text-white">{p.fullName}</h1>
+            <h1 className="mt-4 text-[17px] font-bold leading-tight text-white">{p.fullName}</h1>
           )}
           {p.jobTitle && (
-            <p className="mt-1 text-[10px] font-medium uppercase tracking-wide text-[#8ed4ee]">
+            <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-[#8ed4ee]">
               {p.jobTitle}
             </p>
           )}
@@ -163,7 +163,7 @@ export function ClassicNavy({ data }: { data: CVData }) {
       </aside>
 
       {/* Main column */}
-      <main className="flex-1 bg-[#fdfaf5] px-8 py-8" style={{ fontSize: '10px' }}>
+      <main className="flex-1 bg-[#fdfaf5] px-8 py-8" style={{ fontSize: '11px' }}>
         {p.summary && (
           <section className="mb-6">
             <MainHeading>Profile</MainHeading>
@@ -184,14 +184,14 @@ export function ClassicNavy({ data }: { data: CVData }) {
                       <span className="font-medium text-[#2fa8d5]">{e.company}</span>
                     </p>
                     {(e.startDate || e.endDate || e.current) && (
-                      <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-slate-400">
+                      <p className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">
                         {e.startDate}
                         {e.startDate && (e.endDate || e.current) ? ' – ' : ''}
                         {e.current ? 'Present' : e.endDate}
                       </p>
                     )}
                   </div>
-                  {e.location && <p className="text-[9px] text-slate-400">{e.location}</p>}
+                  {e.location && <p className="text-[10px] text-slate-400">{e.location}</p>}
                   <BulletList text={e.description} />
                 </div>
               ))}
@@ -212,14 +212,14 @@ export function ClassicNavy({ data }: { data: CVData }) {
                       <span className="font-medium text-[#2fa8d5]">{e.institution}</span>
                     </p>
                     {(e.startDate || e.endDate) && (
-                      <p className="shrink-0 text-[9px] font-medium uppercase tracking-wide text-slate-400">
+                      <p className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">
                         {e.startDate}
                         {e.startDate && e.endDate ? ' – ' : ''}
                         {e.endDate}
                       </p>
                     )}
                   </div>
-                  {e.location && <p className="text-[9px] text-slate-400">{e.location}</p>}
+                  {e.location && <p className="text-[10px] text-slate-400">{e.location}</p>}
                   <BulletList text={e.description} />
                 </div>
               ))}

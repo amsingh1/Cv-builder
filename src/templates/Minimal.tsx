@@ -3,7 +3,7 @@ import { lines } from './shared'
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-2 border-b border-slate-300 pb-1 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-900">
+    <h3 className="mb-2 border-b border-slate-300 pb-1 text-[13px] font-bold uppercase tracking-[0.15em] text-slate-900">
       {children}
     </h3>
   )
@@ -39,7 +39,7 @@ export function Minimal({ data }: { data: CVData }) {
       className="mx-auto overflow-hidden bg-white text-slate-800 shadow-xl"
       style={{ width: '210mm', minHeight: '297mm' }}
     >
-      <div className="px-12 py-10" style={{ fontSize: '10px' }}>
+      <div className="px-12 py-10" style={{ fontSize: '11px' }}>
         {/* Header */}
         <div className="flex items-center gap-5 border-b-2 border-slate-800 pb-5">
           {p.photo && (
@@ -51,17 +51,17 @@ export function Minimal({ data }: { data: CVData }) {
           )}
           <div className="min-w-0">
             {p.fullName && (
-              <h1 className="text-[22px] font-bold uppercase tracking-wide text-slate-900">
+              <h1 className="text-[25px] font-bold uppercase tracking-wide text-slate-900">
                 {p.fullName}
               </h1>
             )}
             {p.jobTitle && (
-              <p className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.15em] text-slate-500">
+              <p className="mt-0.5 text-[12.5px] font-medium uppercase tracking-[0.15em] text-slate-500">
                 {p.jobTitle}
               </p>
             )}
             {(contactItems.length > 0 || detailItems.length > 0) && (
-              <p className="mt-2 text-[9px] text-slate-500">
+              <p className="mt-2 text-[10px] text-slate-500">
                 {[...contactItems, ...detailItems].join('   ·   ')}
               </p>
             )}
@@ -89,14 +89,14 @@ export function Minimal({ data }: { data: CVData }) {
                         <span className="font-normal italic text-slate-600">{e.company}</span>
                       </p>
                       {(e.startDate || e.endDate || e.current) && (
-                        <p className="shrink-0 text-[9px] font-medium text-slate-400">
+                        <p className="shrink-0 text-[10px] font-medium text-slate-400">
                           {e.startDate}
                           {e.startDate && (e.endDate || e.current) ? ' – ' : ''}
                           {e.current ? 'Present' : e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-slate-400">{e.location}</p>}
+                    {e.location && <p className="text-[10px] text-slate-400">{e.location}</p>}
                     <BulletList text={e.description} />
                   </div>
                 ))}
@@ -117,14 +117,14 @@ export function Minimal({ data }: { data: CVData }) {
                         <span className="font-normal italic text-slate-600">{e.institution}</span>
                       </p>
                       {(e.startDate || e.endDate) && (
-                        <p className="shrink-0 text-[9px] font-medium text-slate-400">
+                        <p className="shrink-0 text-[10px] font-medium text-slate-400">
                           {e.startDate}
                           {e.startDate && e.endDate ? ' – ' : ''}
                           {e.endDate}
                         </p>
                       )}
                     </div>
-                    {e.location && <p className="text-[9px] text-slate-400">{e.location}</p>}
+                    {e.location && <p className="text-[10px] text-slate-400">{e.location}</p>}
                     <BulletList text={e.description} />
                   </div>
                 ))}
