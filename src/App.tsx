@@ -47,8 +47,10 @@ const SECTIONS: { id: SectionId; label: string; subtitle: string }[] = [
 
 export default function App() {
   const [data, setData] = useLocalStorage<CVData>('cv-builder:data', emptyCV)
-  const [started, setStarted] = useLocalStorage<boolean>('cv-builder:started', false)
-  const [showLanding, setShowLanding] = useState(!started)
+  // The homepage is always the first thing shown on a fresh load of the
+  // site — deliberately not persisted, so reloading "/" never skips it,
+  // even for a returning user who already has CV data saved.
+  const [showLanding, setShowLanding] = useState(true)
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
   const [mobileTab, setMobileTab] = useState<MobileTab>('edit')
@@ -62,7 +64,6 @@ export default function App() {
   )
 
   function enterBuilder() {
-    setStarted(true)
     setShowLanding(false)
   }
 
