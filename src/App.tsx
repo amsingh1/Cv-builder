@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CVData, emptyCV } from './types'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { sampleCV } from './data/sample'
@@ -30,6 +30,8 @@ type SectionId =
   | 'additional'
   | 'design'
 
+const BUILDER_PATH = '/builder'
+
 const SECTIONS: { id: SectionId; label: string; subtitle: string }[] = [
   {
     id: 'personal',
@@ -47,10 +49,12 @@ const SECTIONS: { id: SectionId; label: string; subtitle: string }[] = [
 
 export default function App() {
   const [data, setData] = useLocalStorage<CVData>('cv-builder:data', emptyCV)
-  // The homepage is always the first thing shown on a fresh load of the
-  // site — deliberately not persisted, so reloading "/" never skips it,
-  // even for a returning user who already has CV data saved.
-  const [showLanding, setShowLanding] = useState(true)
+  // Which "page" is shown is driven by the URL, not persisted app state:
+  // "/" is always the homepage, "/builder" is the builder. That way a
+  // refresh stays on whichever page you're on (the browser reloads the
+  // same URL), while opening the site fresh at "/" always lands on the
+  // homepage.
+  const [showLanding, setShowLanding] = useState(() => window.location.pathname !== BUILDER_PATH)
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
   const [mobileTab, setMobileTab] = useState<MobileTab>('edit')
@@ -63,8 +67,22 @@ export default function App() {
     completion.sections.map((s) => [s.id, s.done]),
   )
 
+  useEffect(() => {
+    function onPopState() {
+      setShowLanding(window.location.pathname !== BUILDER_PATH)
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
   function enterBuilder() {
+    window.history.pushState(null, '', BUILDER_PATH)
     setShowLanding(false)
+  }
+
+  function goHome() {
+    window.history.pushState(null, '', '/')
+    setShowLanding(true)
   }
 
   if (showLanding) {
@@ -145,7 +163,7 @@ export default function App() {
     <div className="min-h-screen bg-ink-50">
       <header className="print-hidden sticky top-0 z-10 border-b border-ink-100 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <button type="button" onClick={() => setShowLanding(true)} className="min-w-0 text-left">
+          <button type="button" onClick={goHome} className="min-w-0 text-left">
             <h1 className="text-base font-bold text-ink-800">
               BuildFree<span className="text-cvblue-600">CV</span>
             </h1>
