@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { ExperienceEntry } from '../../types'
 import { makeId } from '../../utils/id'
-import { AddButton, EntryCard, Field, Section, TextAreaField } from './FormControls'
+import { AddButton, CompactEntryCard, Field, TextAreaField } from './FormControls'
 
 export function ExperienceForm({
   data,
@@ -9,35 +10,69 @@ export function ExperienceForm({
   data: ExperienceEntry[]
   onChange: (data: ExperienceEntry[]) => void
 }) {
+  const [expandedId, setExpandedId] = useState<string | null>(data[0]?.id ?? null)
+
   function update(id: string, patch: Partial<ExperienceEntry>) {
     onChange(data.map((e) => (e.id === id ? { ...e, ...patch } : e)))
   }
 
   function add() {
-    onChange([
-      ...data,
-      {
-        id: makeId(),
-        role: '',
-        company: '',
-        location: '',
-        startDate: '',
-        endDate: '',
-        current: false,
-        description: '',
-      },
-    ])
+    const entry: ExperienceEntry = {
+      id: makeId(),
+      role: '',
+      company: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      current: false,
+      description: '',
+    }
+    onChange([...data, entry])
+    setExpandedId(entry.id)
+  }
+
+  function duplicate(id: string) {
+    const source = data.find((e) => e.id === id)
+    if (!source) return
+    const index = data.findIndex((e) => e.id === id)
+    const copy: ExperienceEntry = { ...source, id: makeId() }
+    onChange([...data.slice(0, index + 1), copy, ...data.slice(index + 1)])
+    setExpandedId(copy.id)
   }
 
   function remove(id: string) {
     onChange(data.filter((e) => e.id !== id))
   }
 
+  function move(id: string, direction: -1 | 1) {
+    const index = data.findIndex((e) => e.id === id)
+    const target = index + direction
+    if (target < 0 || target >= data.length) return
+    const next = [...data]
+    ;[next[index], next[target]] = [next[target], next[index]]
+    onChange(next)
+  }
+
   return (
-    <Section title="Work experience" subtitle="Most recent first.">
-      {data.map((entry) => (
-        <EntryCard key={entry.id} onRemove={() => remove(entry.id)}>
-          <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
+    <div className="space-y-3">
+      {data.map((entry, i) => (
+        <CompactEntryCard
+          key={entry.id}
+          title={entry.role || 'New role'}
+          subtitle={entry.company}
+          meta={
+            entry.startDate || entry.endDate || entry.current
+              ? `${entry.startDate}${entry.startDate ? ' – ' : ''}${entry.current ? 'Present' : entry.endDate}`
+              : undefined
+          }
+          expanded={expandedId === entry.id}
+          onToggle={() => setExpandedId(expandedId === entry.id ? null : entry.id)}
+          onDuplicate={() => duplicate(entry.id)}
+          onRemove={() => remove(entry.id)}
+          onMoveUp={i > 0 ? () => move(entry.id, -1) : undefined}
+          onMoveDown={i < data.length - 1 ? () => move(entry.id, 1) : undefined}
+        >
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field
               label="Role"
               value={entry.role}
@@ -88,9 +123,9 @@ export function ExperienceForm({
             onChange={(e) => update(entry.id, { description: e.target.value })}
             placeholder="Key responsibilities and achievements, ideally as short bullet-style sentences."
           />
-        </EntryCard>
+        </CompactEntryCard>
       ))}
       <AddButton onClick={add} label="Add experience" />
-    </Section>
+    </div>
   )
 }

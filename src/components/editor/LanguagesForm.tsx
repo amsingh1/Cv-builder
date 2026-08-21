@@ -1,6 +1,6 @@
 import { LanguageEntry, LanguageLevel } from '../../types'
 import { makeId } from '../../utils/id'
-import { AddButton, Field, SelectField, Section } from './FormControls'
+import { AddButton, Field, SelectField } from './FormControls'
 
 const LEVELS: LanguageLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Native']
 
@@ -24,7 +24,7 @@ export function LanguagesForm({
   }
 
   return (
-    <Section title="Languages" subtitle="CEFR scale (A1–C2) or Native.">
+    <div className="space-y-3">
       {data.map((lang) => (
         <div key={lang.id} className="flex items-end gap-2">
           <div className="flex-1">
@@ -56,6 +56,6 @@ export function LanguagesForm({
         </div>
       ))}
       <AddButton onClick={add} label="Add language" />
-    </Section>
+    </div>
   )
 }

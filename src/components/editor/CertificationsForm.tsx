@@ -1,6 +1,6 @@
 import { CertificationEntry } from '../../types'
 import { makeId } from '../../utils/id'
-import { AddButton, EntryCard, Field, Section } from './FormControls'
+import { AddButton, EntryCard, Field } from './FormControls'
 
 export function CertificationsForm({
   data,
@@ -22,7 +22,11 @@ export function CertificationsForm({
   }
 
   return (
-    <Section title="Certifications" subtitle="Optional.">
+    <div className="space-y-3">
+      <div>
+        <h3 className="text-sm font-semibold text-ink-800">Certifications</h3>
+        <p className="text-xs text-ink-400">Optional.</p>
+      </div>
       {data.map((cert) => (
         <EntryCard key={cert.id} onRemove={() => remove(cert.id)}>
           <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
@@ -48,6 +52,6 @@ export function CertificationsForm({
         </EntryCard>
       ))}
       <AddButton onClick={add} label="Add certification" />
-    </Section>
+    </div>
   )
 }

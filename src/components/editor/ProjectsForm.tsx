@@ -1,6 +1,6 @@
 import { ProjectEntry } from '../../types'
 import { makeId } from '../../utils/id'
-import { AddButton, EntryCard, Field, Section, TextAreaField } from './FormControls'
+import { AddButton, EntryCard, Field, TextAreaField } from './FormControls'
 
 export function ProjectsForm({
   data,
@@ -22,7 +22,11 @@ export function ProjectsForm({
   }
 
   return (
-    <Section title="Projects" subtitle="Optional — good for portfolio pieces." defaultOpen={false}>
+    <div className="space-y-3">
+      <div>
+        <h3 className="text-sm font-semibold text-ink-800">Projects</h3>
+        <p className="text-xs text-ink-400">Optional — good for portfolio pieces.</p>
+      </div>
       {data.map((project) => (
         <EntryCard key={project.id} onRemove={() => remove(project.id)}>
           <div className="grid grid-cols-1 gap-3 pr-6 sm:grid-cols-2">
@@ -49,6 +53,6 @@ export function ProjectsForm({
         </EntryCard>
       ))}
       <AddButton onClick={add} label="Add project" />
-    </Section>
+    </div>
   )
 }
