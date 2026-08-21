@@ -1,49 +1,4 @@
-import { ReactNode, useState } from 'react'
-
-export function Section({
-  title,
-  subtitle,
-  defaultOpen = true,
-  children,
-  right,
-}: {
-  title: string
-  subtitle?: string
-  defaultOpen?: boolean
-  children: ReactNode
-  right?: ReactNode
-}) {
-  const [open, setOpen] = useState(defaultOpen)
-  return (
-    <div className="rounded-xl border border-ink-100 bg-white shadow-sm">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
-      >
-        <div>
-          <h2 className="text-sm font-semibold tracking-wide text-ink-800">{title}</h2>
-          {subtitle && <p className="mt-0.5 text-xs text-ink-400">{subtitle}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          {right}
-          <svg
-            className={`h-4 w-4 shrink-0 text-ink-400 transition-transform ${open ? 'rotate-180' : ''}`}
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.084l3.71-3.855a.75.75 0 111.08 1.04l-4.24 4.41a.75.75 0 01-1.08 0l-4.24-4.41a.75.75 0 01.02-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      </button>
-      {open && <div className="space-y-4 border-t border-ink-100 px-5 py-4">{children}</div>}
-    </div>
-  )
-}
+import { ReactNode } from 'react'
 
 export function Field({
   label,
@@ -137,6 +92,95 @@ export function AddButton({ onClick, label }: { onClick: () => void; label: stri
       </svg>
       {label}
     </button>
+  )
+}
+
+export function CompactEntryCard({
+  title,
+  subtitle,
+  meta,
+  expanded,
+  onToggle,
+  onDuplicate,
+  onRemove,
+  onMoveUp,
+  onMoveDown,
+  children,
+}: {
+  title: string
+  subtitle?: string
+  meta?: string
+  expanded: boolean
+  onToggle: () => void
+  onDuplicate: () => void
+  onRemove: () => void
+  onMoveUp?: () => void
+  onMoveDown?: () => void
+  children: ReactNode
+}) {
+  return (
+    <div className="overflow-hidden rounded-lg border border-ink-100 bg-ink-50/50">
+      <div className="flex items-start gap-2 py-3 pl-4 pr-2">
+        <button type="button" onClick={onToggle} className="min-w-0 flex-1 text-left">
+          <p className="truncate text-sm font-semibold text-ink-800">{title || 'Untitled'}</p>
+          {(subtitle || meta) && (
+            <p className="mt-0.5 truncate text-xs text-ink-500">
+              {subtitle}
+              {subtitle && meta ? ' · ' : ''}
+              {meta}
+            </p>
+          )}
+        </button>
+        <div className="flex shrink-0 items-center gap-0.5">
+          {onMoveUp && (
+            <button
+              type="button"
+              onClick={onMoveUp}
+              aria-label="Move up"
+              className="rounded-md p-1.5 text-ink-300 hover:bg-white hover:text-ink-600"
+            >
+              <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M10 4.75a.75.75 0 01.53.22l4 4a.75.75 0 01-1.06 1.06L10.75 7.31V15a.75.75 0 01-1.5 0V7.31L6.53 10.03a.75.75 0 01-1.06-1.06l4-4A.75.75 0 0110 4.75z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          )}
+          {onMoveDown && (
+            <button
+              type="button"
+              onClick={onMoveDown}
+              aria-label="Move down"
+              className="rounded-md p-1.5 text-ink-300 hover:bg-white hover:text-ink-600"
+            >
+              <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M10 15.25a.75.75 0 01-.53-.22l-4-4a.75.75 0 111.06-1.06l2.72 2.72V5a.75.75 0 011.5 0v7.69l2.72-2.72a.75.75 0 111.06 1.06l-4 4a.75.75 0 01-.53.22z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="flex items-center gap-3 border-t border-ink-100 px-4 py-2 text-xs font-semibold">
+        <button type="button" onClick={onToggle} className="text-ink-600 hover:text-ink-900">
+          {expanded ? 'Done' : 'Edit'}
+        </button>
+        <span className="text-ink-200">·</span>
+        <button type="button" onClick={onDuplicate} className="text-ink-600 hover:text-ink-900">
+          Duplicate
+        </button>
+        <span className="text-ink-200">·</span>
+        <button type="button" onClick={onRemove} className="text-red-500 hover:text-red-600">
+          Delete
+        </button>
+      </div>
+      {expanded && <div className="space-y-3 border-t border-ink-100 bg-white p-4">{children}</div>}
+    </div>
   )
 }
 

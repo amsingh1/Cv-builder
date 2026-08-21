@@ -3,7 +3,9 @@ import { CVData, emptyCV } from './types'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { sampleCV } from './data/sample'
 import { AI_PROMPT_TEMPLATE, downloadCVData, parseCVData } from './utils/cvIO'
+import { getCompletion } from './utils/completion'
 import { PersonalForm } from './components/editor/PersonalForm'
+import { SummaryForm } from './components/editor/SummaryForm'
 import { ExperienceForm } from './components/editor/ExperienceForm'
 import { EducationForm } from './components/editor/EducationForm'
 import { SkillsForm } from './components/editor/SkillsForm'
@@ -11,19 +13,73 @@ import { LanguagesForm } from './components/editor/LanguagesForm'
 import { CertificationsForm } from './components/editor/CertificationsForm'
 import { ProjectsForm } from './components/editor/ProjectsForm'
 import { ScaledPreview } from './components/preview/ScaledPreview'
+import { TemplateGallery } from './components/TemplateGallery'
+import { Landing } from './components/Landing'
 import { Dropdown, DropdownDivider, DropdownItem } from './components/Dropdown'
 import { DEFAULT_TEMPLATE_ID, TEMPLATES, getTemplate } from './templates/registry'
 
 type MobileTab = 'edit' | 'preview'
 
+type SectionId =
+  | 'personal'
+  | 'summary'
+  | 'experience'
+  | 'education'
+  | 'skills'
+  | 'languages'
+  | 'additional'
+  | 'design'
+
+const SECTIONS: { id: SectionId; label: string; subtitle: string }[] = [
+  {
+    id: 'personal',
+    label: 'Personal Details',
+    subtitle: 'Contact info and photo — everything here is optional.',
+  },
+  { id: 'summary', label: 'Summary', subtitle: 'A short paragraph about your experience and goals.' },
+  { id: 'experience', label: 'Experience', subtitle: 'Most recent role first.' },
+  { id: 'education', label: 'Education', subtitle: 'Most recent first.' },
+  { id: 'skills', label: 'Skills', subtitle: 'Technologies, tools, methodologies.' },
+  { id: 'languages', label: 'Languages', subtitle: 'CEFR scale (A1–C2) or Native.' },
+  { id: 'additional', label: 'Additional Sections', subtitle: 'Certifications and projects — optional.' },
+  { id: 'design', label: 'Design', subtitle: 'Choose a template — switching never deletes your data.' },
+]
+
 export default function App() {
   const [data, setData] = useLocalStorage<CVData>('cv-builder:data', emptyCV)
+  const [started, setStarted] = useLocalStorage<boolean>('cv-builder:started', false)
+  const hasAnyData = Boolean(
+    data.personal.fullName || data.personal.email || data.experience.length || data.education.length,
+  )
+  const [showLanding, setShowLanding] = useState(!started && !hasAnyData)
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
   const [mobileTab, setMobileTab] = useState<MobileTab>('edit')
+  const [activeSection, setActiveSection] = useState<SectionId>('personal')
   const [templateId, setTemplateId] = useLocalStorage<string>('cv-builder:template', DEFAULT_TEMPLATE_ID)
   const fileInput = useRef<HTMLInputElement>(null)
   const selectedTemplate = getTemplate(templateId)
+  const completion = getCompletion(data)
+  const completionMap: Record<string, boolean> = Object.fromEntries(
+    completion.sections.map((s) => [s.id, s.done]),
+  )
+
+  function enterBuilder() {
+    setStarted(true)
+    setShowLanding(false)
+  }
+
+  if (showLanding) {
+    return (
+      <Landing
+        onStart={enterBuilder}
+        onSelectTemplate={(id) => {
+          setTemplateId(id)
+          enterBuilder()
+        }}
+      />
+    )
+  }
 
   function loadSample() {
     if (
@@ -85,16 +141,20 @@ export default function App() {
     }, 0)
   }
 
+  const activeDef = SECTIONS.find((s) => s.id === activeSection)!
+
   return (
     <div className="min-h-screen bg-ink-50">
       <header className="print-hidden sticky top-0 z-10 border-b border-ink-100 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="min-w-0">
-            <h1 className="text-base font-bold text-ink-800">CV Builder</h1>
+          <button type="button" onClick={() => setShowLanding(true)} className="min-w-0 text-left">
+            <h1 className="text-base font-bold text-ink-800">
+              BuildFree<span className="text-cvblue-600">CV</span>
+            </h1>
             <p className="hidden truncate text-xs text-ink-400 sm:block">
               Everything stays in your browser — nothing is uploaded anywhere.
             </p>
-          </div>
+          </button>
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <Dropdown label="Data">
               <DropdownItem onClick={copyPrompt}>
@@ -177,46 +237,137 @@ export default function App() {
         <div
           className={`${mobileTab === 'edit' ? 'block' : 'hidden'} print-hidden editor-scroll w-full space-y-4 pb-24 lg:block lg:sticky lg:top-[76px] lg:max-h-[calc(100vh-92px)] lg:w-[460px] lg:shrink-0 lg:overflow-y-auto`}
         >
-          <PersonalForm data={data.personal} onChange={(personal) => setData({ ...data, personal })} />
-          <ExperienceForm
-            data={data.experience}
-            onChange={(experience) => setData({ ...data, experience })}
-          />
-          <EducationForm data={data.education} onChange={(education) => setData({ ...data, education })} />
-          <SkillsForm data={data.skills} onChange={(skills) => setData({ ...data, skills })} />
-          <LanguagesForm data={data.languages} onChange={(languages) => setData({ ...data, languages })} />
-          <CertificationsForm
-            data={data.certifications}
-            onChange={(certifications) => setData({ ...data, certifications })}
-          />
-          <ProjectsForm data={data.projects} onChange={(projects) => setData({ ...data, projects })} />
+          <div className="rounded-xl border border-ink-100 bg-white p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-xs font-semibold text-ink-500">CV completion</span>
+              <span className="text-xs font-bold text-cvblue-700">{completion.percent}%</span>
+            </div>
+            <div className="mb-4 h-1.5 w-full overflow-hidden rounded-full bg-ink-100">
+              <div
+                className="h-full rounded-full bg-cvblue-600 transition-all"
+                style={{ width: `${completion.percent}%` }}
+              />
+            </div>
+            <nav className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
+              {SECTIONS.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setActiveSection(s.id)}
+                  className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                    activeSection === s.id
+                      ? 'bg-ink-800 text-white'
+                      : 'bg-ink-50 text-ink-600 hover:bg-ink-100'
+                  }`}
+                >
+                  {completionMap[s.id] && (
+                    <svg
+                      className={`h-3 w-3 ${activeSection === s.id ? 'text-emerald-400' : 'text-emerald-500'}`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                  {s.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="rounded-xl border border-ink-100 bg-white shadow-sm">
+            <div className="border-b border-ink-100 px-5 py-4">
+              <h2 className="text-sm font-semibold tracking-wide text-ink-800">{activeDef.label}</h2>
+              <p className="mt-0.5 text-xs text-ink-400">{activeDef.subtitle}</p>
+            </div>
+            <div className="px-5 py-4">
+              {activeSection === 'personal' && (
+                <PersonalForm data={data.personal} onChange={(personal) => setData({ ...data, personal })} />
+              )}
+              {activeSection === 'summary' && (
+                <SummaryForm
+                  value={data.personal.summary}
+                  onChange={(summary) => setData({ ...data, personal: { ...data.personal, summary } })}
+                />
+              )}
+              {activeSection === 'experience' && (
+                <ExperienceForm
+                  data={data.experience}
+                  onChange={(experience) => setData({ ...data, experience })}
+                />
+              )}
+              {activeSection === 'education' && (
+                <EducationForm data={data.education} onChange={(education) => setData({ ...data, education })} />
+              )}
+              {activeSection === 'skills' && (
+                <SkillsForm data={data.skills} onChange={(skills) => setData({ ...data, skills })} />
+              )}
+              {activeSection === 'languages' && (
+                <LanguagesForm data={data.languages} onChange={(languages) => setData({ ...data, languages })} />
+              )}
+              {activeSection === 'additional' && (
+                <div className="space-y-6">
+                  <CertificationsForm
+                    data={data.certifications}
+                    onChange={(certifications) => setData({ ...data, certifications })}
+                  />
+                  <div className="border-t border-ink-100 pt-6">
+                    <ProjectsForm data={data.projects} onChange={(projects) => setData({ ...data, projects })} />
+                  </div>
+                </div>
+              )}
+              {activeSection === 'design' && (
+                <TemplateGallery
+                  templates={TEMPLATES}
+                  data={data}
+                  selectedId={templateId}
+                  onSelect={setTemplateId}
+                  actionLabel="Select"
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         <div
           className={`cv-preview-panel ${mobileTab === 'preview' ? 'block' : 'hidden'} min-w-0 pb-24 lg:block lg:flex-1`}
         >
-          <div className="print-hidden mb-4 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
-            <span className="text-xs font-medium text-ink-500">Design:</span>
-            {TEMPLATES.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setTemplateId(t.id)}
-                title={t.name}
-                aria-label={t.name}
-                className={`h-8 w-8 shrink-0 overflow-hidden rounded-md border transition ${
-                  templateId === t.id
-                    ? 'border-ink-800 ring-2 ring-ink-800 ring-offset-1'
-                    : 'border-ink-200 hover:border-ink-400'
-                }`}
-                style={{
-                  background: `linear-gradient(135deg, ${t.swatch[0]} 0%, ${t.swatch[0]} 50%, ${t.swatch[1]} 50%, ${t.swatch[1]} 100%)`,
-                }}
-              />
-            ))}
-            <span className="text-xs text-ink-500">{selectedTemplate.name}</span>
+          <div className="print-hidden mb-4 flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xs font-medium text-ink-500">
+              Template: <span className="font-semibold text-ink-700">{selectedTemplate.name}</span>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveSection('design')
+                setMobileTab('edit')
+              }}
+              className="text-xs font-semibold text-cvblue-700 hover:underline"
+            >
+              Change template
+            </button>
           </div>
+
+          {completion.percent >= 50 && (
+            <div className="print-hidden mb-4 flex flex-col items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 sm:flex-row">
+              <p className="text-sm font-semibold text-emerald-800">Your CV is ready</p>
+              <button
+                onClick={handlePrint}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700"
+              >
+                Download PDF
+              </button>
+            </div>
+          )}
+
           <ScaledPreview data={data} Template={selectedTemplate.component} />
+          <p className="print-hidden mt-3 text-center text-xs text-ink-400">
+            Generated directly in your browser — nothing is ever uploaded.
+          </p>
         </div>
       </div>
     </div>

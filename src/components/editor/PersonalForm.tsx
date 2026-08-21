@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { PersonalInfo } from '../../types'
-import { Field, Section, TextAreaField } from './FormControls'
+import { Field } from './FormControls'
 
 export function PersonalForm({
   data,
@@ -28,7 +28,7 @@ export function PersonalForm({
   }
 
   return (
-    <Section title="Personal details" subtitle="Everything here is optional.">
+    <div className="space-y-4">
       <div className="flex items-center gap-4">
         <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-ink-200 bg-ink-50">
           {data.photo ? (
@@ -139,14 +139,6 @@ export function PersonalForm({
           className="sm:col-span-2"
         />
       </div>
-
-      <TextAreaField
-        label="Professional summary"
-        rows={4}
-        value={data.summary}
-        onChange={(e) => set('summary', e.target.value)}
-        placeholder="A short paragraph about your experience, focus areas and what you're looking for."
-      />
-    </Section>
+    </div>
   )
 }

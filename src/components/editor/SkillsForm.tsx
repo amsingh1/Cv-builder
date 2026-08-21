@@ -1,6 +1,6 @@
 import { SkillEntry, SkillLevel } from '../../types'
 import { makeId } from '../../utils/id'
-import { AddButton, Field, SelectField, Section } from './FormControls'
+import { AddButton, Field, SelectField } from './FormControls'
 
 const LEVELS: SkillLevel[] = ['Basic', 'Intermediate', 'Advanced', 'Expert']
 
@@ -24,7 +24,7 @@ export function SkillsForm({
   }
 
   return (
-    <Section title="Skills" subtitle="Technologies, tools, methodologies.">
+    <div className="space-y-3">
       {data.map((skill) => (
         <div key={skill.id} className="flex items-end gap-2">
           <div className="flex-1">
@@ -56,6 +56,6 @@ export function SkillsForm({
         </div>
       ))}
       <AddButton onClick={add} label="Add skill" />
-    </Section>
+    </div>
   )
 }
