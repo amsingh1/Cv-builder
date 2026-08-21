@@ -48,10 +48,7 @@ const SECTIONS: { id: SectionId; label: string; subtitle: string }[] = [
 export default function App() {
   const [data, setData] = useLocalStorage<CVData>('cv-builder:data', emptyCV)
   const [started, setStarted] = useLocalStorage<boolean>('cv-builder:started', false)
-  const hasAnyData = Boolean(
-    data.personal.fullName || data.personal.email || data.experience.length || data.education.length,
-  )
-  const [showLanding, setShowLanding] = useState(!started && !hasAnyData)
+  const [showLanding, setShowLanding] = useState(!started)
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
   const [mobileTab, setMobileTab] = useState<MobileTab>('edit')
@@ -195,7 +192,7 @@ export default function App() {
             )}
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 rounded-lg bg-ink-800 px-3 py-2 text-xs font-semibold text-white hover:bg-ink-700 sm:px-4"
+              className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700 sm:px-4"
             >
               <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                 <path
@@ -336,33 +333,37 @@ export default function App() {
         <div
           className={`cv-preview-panel ${mobileTab === 'preview' ? 'block' : 'hidden'} min-w-0 pb-24 lg:block lg:flex-1`}
         >
-          <div className="print-hidden mb-4 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs font-medium text-ink-500">
-              Template: <span className="font-semibold text-ink-700">{selectedTemplate.name}</span>
-            </p>
+          <div className="print-hidden mb-4 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+            <span className="text-xs font-medium text-ink-500">Template:</span>
+            {TEMPLATES.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setTemplateId(t.id)}
+                title={t.name}
+                aria-label={t.name}
+                className={`h-8 w-8 shrink-0 overflow-hidden rounded-md border transition ${
+                  templateId === t.id
+                    ? 'border-ink-800 ring-2 ring-ink-800 ring-offset-1'
+                    : 'border-ink-200 hover:border-ink-400'
+                }`}
+                style={{
+                  background: `linear-gradient(135deg, ${t.swatch[0]} 0%, ${t.swatch[0]} 50%, ${t.swatch[1]} 50%, ${t.swatch[1]} 100%)`,
+                }}
+              />
+            ))}
+            <span className="text-xs text-ink-500">{selectedTemplate.name}</span>
             <button
               type="button"
               onClick={() => {
                 setActiveSection('design')
                 setMobileTab('edit')
               }}
-              className="text-xs font-semibold text-cvblue-700 hover:underline"
+              className="ml-1 text-xs font-semibold text-cvblue-700 hover:underline"
             >
-              Change template
+              Browse all
             </button>
           </div>
-
-          {completion.percent >= 50 && (
-            <div className="print-hidden mb-4 flex flex-col items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 sm:flex-row">
-              <p className="text-sm font-semibold text-emerald-800">Your CV is ready</p>
-              <button
-                onClick={handlePrint}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700"
-              >
-                Download PDF
-              </button>
-            </div>
-          )}
 
           <ScaledPreview data={data} Template={selectedTemplate.component} />
           <p className="print-hidden mt-3 text-center text-xs text-ink-400">
