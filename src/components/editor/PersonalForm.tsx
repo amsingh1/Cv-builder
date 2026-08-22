@@ -29,6 +29,16 @@ export function PersonalForm({
 
   return (
     <div className="space-y-4">
+      <div className="flex items-start gap-2 rounded-lg bg-ink-50 px-3 py-2 text-xs text-cvblue-700">
+        <svg className="mt-0.5 h-3.5 w-3.5 shrink-0 text-cvblue-600" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fillRule="evenodd"
+            d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <span>Nothing you type here is uploaded anywhere — it's saved only in this browser's storage.</span>
+      </div>
       <div className="flex items-center gap-4">
         <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-ink-200 bg-ink-50">
           {data.photo ? (
