@@ -91,18 +91,6 @@ export function Landing({
         />
       </section>
 
-      <section className="border-t border-ink-100 bg-white px-4 py-14 sm:px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-lg font-bold text-ink-900">Why this exists</h2>
-          <p className="mt-3 text-sm leading-relaxed text-ink-500 sm:text-base">
-            Built by <span className="font-semibold text-ink-700">Amit Singh</span> — someone who
-            likes building solutions that solve real, everyday problems. CVs shouldn't require an
-            account or a credit card, so this one doesn't: everything runs in your browser, your
-            data is never uploaded, and the PDF is yours to keep, free.
-          </p>
-        </div>
-      </section>
-
       <footer className="border-t border-ink-100 px-4 py-10 text-center sm:px-6">
         <p className="text-sm text-ink-500">
           Free forever. No accounts, no PDF fees. Site visits are measured with
