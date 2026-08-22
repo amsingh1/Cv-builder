@@ -92,11 +92,7 @@ export function Landing({
       </section>
 
       <footer className="border-t border-ink-100 px-4 py-10 text-center sm:px-6">
-        <p className="text-sm text-ink-500">
-          Free forever. No accounts, no PDF fees. Site visits are measured with
-          privacy-friendly, cookieless analytics — never your CV data, which never leaves your
-          browser.
-        </p>
+        <p className="text-sm text-ink-500">Free forever. No accounts, no PDF fees.</p>
         <button
           onClick={onStart}
           className="mt-4 rounded-lg bg-ink-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink-700"
