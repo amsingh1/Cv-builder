@@ -21,7 +21,7 @@ function slugify(text: string): string {
 
 export function cvFileName(data: CVData): string {
   const slug = slugify(data.personal.fullName)
-  return `${slug || 'cv-data'}.json`
+  return `${slug || 'cv-data'}-cv-backup.json`
 }
 
 export function downloadCVData(data: CVData) {

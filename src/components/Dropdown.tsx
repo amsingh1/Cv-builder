@@ -44,21 +44,33 @@ export function Dropdown({ label, children }: { label: ReactNode; children: Reac
 export function DropdownItem({
   onClick,
   children,
+  tooltip,
   danger,
 }: {
   onClick: () => void
   children: ReactNode
+  tooltip?: string
   danger?: boolean
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`block w-full px-3.5 py-2 text-left text-xs font-medium ${
+      className={`flex w-full items-center gap-1.5 px-3.5 py-2 text-left text-xs font-medium ${
         danger ? 'text-red-500 hover:bg-red-50' : 'text-ink-600 hover:bg-ink-50'
       }`}
     >
-      {children}
+      <span>{children}</span>
+      {tooltip && (
+        <svg className="h-3.5 w-3.5 shrink-0 text-ink-300" viewBox="0 0 20 20" fill="currentColor">
+          <title>{tooltip}</title>
+          <path
+            fillRule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.25v2.75a.75.75 0 001.5 0V10a.75.75 0 00-.75-.75H9z"
+            clipRule="evenodd"
+          />
+        </svg>
+      )}
     </button>
   )
 }
