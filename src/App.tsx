@@ -176,7 +176,12 @@ export default function App() {
               <DropdownItem onClick={copyPrompt}>
                 {promptCopied ? 'Copied!' : 'Copy prompt for Claude…'}
               </DropdownItem>
-              <DropdownItem onClick={handleUploadClick}>Restore from a backup file</DropdownItem>
+              <DropdownItem
+                onClick={handleUploadClick}
+                tooltip="Needs a .json file in this app's CV format — from your own backup, or from Claude's output."
+              >
+                Restore from a backup file
+              </DropdownItem>
               <DropdownItem onClick={() => downloadCVData(data)}>Save a backup file</DropdownItem>
               <DropdownDivider />
               <DropdownItem onClick={loadSample}>Load example</DropdownItem>
