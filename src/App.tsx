@@ -16,6 +16,7 @@ import { ScaledPreview } from './components/preview/ScaledPreview'
 import { TemplateGallery } from './components/TemplateGallery'
 import { Landing } from './components/Landing'
 import { Dropdown, DropdownDivider, DropdownItem } from './components/Dropdown'
+import { SectionNav } from './components/SectionNav'
 import { DEFAULT_TEMPLATE_ID, TEMPLATES, getTemplate } from './templates/registry'
 
 type MobileTab = 'edit' | 'preview'
@@ -269,35 +270,12 @@ export default function App() {
                 style={{ width: `${completion.percent}%` }}
               />
             </div>
-            <nav className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
-              {SECTIONS.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => setActiveSection(s.id)}
-                  className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    activeSection === s.id
-                      ? 'bg-ink-800 text-white'
-                      : 'bg-ink-50 text-ink-600 hover:bg-ink-100'
-                  }`}
-                >
-                  {completionMap[s.id] && (
-                    <svg
-                      className={`h-3 w-3 ${activeSection === s.id ? 'text-emerald-400' : 'text-emerald-500'}`}
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  )}
-                  {s.label}
-                </button>
-              ))}
-            </nav>
+            <SectionNav
+              sections={SECTIONS}
+              activeId={activeSection}
+              completionMap={completionMap}
+              onSelect={(id) => setActiveSection(id as SectionId)}
+            />
           </div>
 
           <div className="rounded-xl border border-ink-100 bg-white shadow-sm">
