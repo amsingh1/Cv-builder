@@ -46,10 +46,28 @@ export function SectionNav({
   }
 
   return (
-    <div className="relative">
+    <div className="flex items-center gap-1.5">
+      <button
+        type="button"
+        aria-label="Previous sections"
+        disabled={!canScrollLeft}
+        onClick={() => step(-1)}
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-600 shadow-sm transition-opacity active:scale-95 ${
+          canScrollLeft ? '' : 'opacity-30'
+        }`}
+      >
+        <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fillRule="evenodd"
+            d="M12.79 5.23a.75.75 0 010 1.06L8.832 10l3.958 3.71a.75.75 0 11-1.02 1.1l-4.5-4.25a.75.75 0 010-1.1l4.5-4.25a.75.75 0 011.02.03z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+
       <nav
         ref={scrollRef}
-        className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex flex-1 gap-1.5 overflow-x-auto py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {sections.map((s) => (
           <button
@@ -79,51 +97,23 @@ export function SectionNav({
         ))}
       </nav>
 
-      <div
-        className={`pointer-events-none absolute inset-y-0 left-0 w-7 transition-opacity ${
-          canScrollLeft ? 'opacity-100' : 'opacity-0'
+      <button
+        type="button"
+        aria-label="More sections"
+        disabled={!canScrollRight}
+        onClick={() => step(1)}
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-600 shadow-sm transition-opacity active:scale-95 ${
+          canScrollRight ? '' : 'opacity-30'
         }`}
-        style={{ boxShadow: 'inset 20px 0 14px -6px rgba(20, 27, 35, 0.55)' }}
-      />
-      <div
-        className={`pointer-events-none absolute inset-y-0 right-0 w-7 transition-opacity ${
-          canScrollRight ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{ boxShadow: 'inset -20px 0 14px -6px rgba(20, 27, 35, 0.55)' }}
-      />
-
-      {canScrollLeft && (
-        <button
-          type="button"
-          aria-label="Previous sections"
-          onClick={() => step(-1)}
-          className="absolute left-0 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-600 shadow-sm active:scale-95"
-        >
-          <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M12.79 5.23a.75.75 0 010 1.06L8.832 10l3.958 3.71a.75.75 0 11-1.02 1.1l-4.5-4.25a.75.75 0 010-1.1l4.5-4.25a.75.75 0 011.02.03z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      )}
-      {canScrollRight && (
-        <button
-          type="button"
-          aria-label="More sections"
-          onClick={() => step(1)}
-          className="absolute right-0 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-600 shadow-sm active:scale-95"
-        >
-          <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M7.21 14.77a.75.75 0 010-1.06L11.168 10 7.21 6.29a.75.75 0 111.02-1.1l4.5 4.25a.75.75 0 010 1.1l-4.5 4.25a.75.75 0 01-1.02-.03z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      )}
+      >
+        <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fillRule="evenodd"
+            d="M7.21 14.77a.75.75 0 010-1.06L11.168 10 7.21 6.29a.75.75 0 111.02-1.1l4.5 4.25a.75.75 0 010 1.1l-4.5 4.25a.75.75 0 01-1.02-.03z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
     </div>
   )
 }
