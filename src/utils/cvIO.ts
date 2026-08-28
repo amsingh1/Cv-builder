@@ -55,11 +55,11 @@ export function parseCVData(raw: string): CVData {
   try {
     parsed = JSON.parse(cleaned)
   } catch {
-    throw new Error('That file is not valid JSON.')
+    throw new Error("That doesn't look like a valid backup file.")
   }
 
   if (!parsed || typeof parsed !== 'object') {
-    throw new Error('Expected a JSON object with CV fields.')
+    throw new Error("That file doesn't match the expected backup format.")
   }
 
   const obj = parsed as Record<string, unknown>

@@ -16,7 +16,7 @@ export function TemplateGallery({
   actionLabel?: string
 }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-5">
+    <div className="flex flex-wrap justify-center gap-5">
       {templates.map((t) => {
         const selected = t.id === selectedId
         return (
@@ -24,7 +24,7 @@ export function TemplateGallery({
             key={t.id}
             type="button"
             onClick={() => onSelect(t.id)}
-            className={`group text-left ${selected ? '' : ''}`}
+            className="group w-[140px] text-left sm:w-[160px]"
           >
             <div
               className={`aspect-[210/297] w-full overflow-hidden rounded-lg border bg-white shadow-sm transition ${

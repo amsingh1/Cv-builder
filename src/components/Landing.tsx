@@ -2,8 +2,6 @@ import { sampleCV } from '../data/sample'
 import { TEMPLATES } from '../templates/registry'
 import { TemplateGallery } from './TemplateGallery'
 
-const SHOWCASE_IDS = ['vibrant-blue', 'classic-navy', 'minimal']
-
 export function Landing({
   onStart,
   onSelectTemplate,
@@ -11,8 +9,6 @@ export function Landing({
   onStart: () => void
   onSelectTemplate: (templateId: string) => void
 }) {
-  const showcaseTemplates = TEMPLATES.filter((t) => SHOWCASE_IDS.includes(t.id))
-
   function scrollToTemplates() {
     document.getElementById('templates')?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -84,7 +80,7 @@ export function Landing({
           </p>
         </div>
         <TemplateGallery
-          templates={showcaseTemplates}
+          templates={TEMPLATES}
           data={sampleCV}
           onSelect={onSelectTemplate}
           actionLabel="Use this template"

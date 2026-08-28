@@ -126,7 +126,7 @@ export default function App() {
         const parsed = parseCVData(reader.result as string)
         if (
           confirm(
-            'Load this JSON into the builder? This will replace what you currently have in the form.',
+            'Load this backup file into the builder? This will replace what you currently have in the form.',
           )
         ) {
           setData(parsed)
@@ -176,8 +176,8 @@ export default function App() {
               <DropdownItem onClick={copyPrompt}>
                 {promptCopied ? 'Copied!' : 'Copy prompt for Claude…'}
               </DropdownItem>
-              <DropdownItem onClick={handleUploadClick}>Upload JSON</DropdownItem>
-              <DropdownItem onClick={() => downloadCVData(data)}>Download JSON</DropdownItem>
+              <DropdownItem onClick={handleUploadClick}>Restore from a backup file</DropdownItem>
+              <DropdownItem onClick={() => downloadCVData(data)}>Save a backup file</DropdownItem>
               <DropdownDivider />
               <DropdownItem onClick={loadSample}>Load example</DropdownItem>
               <DropdownDivider />
@@ -232,7 +232,7 @@ export default function App() {
             <button
               onClick={() => setMobileTab('edit')}
               className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition-colors ${
-                mobileTab === 'edit' ? 'bg-white text-ink-800 shadow-sm' : 'text-ink-500'
+                mobileTab === 'edit' ? 'bg-cvblue-600 text-white shadow-sm' : 'text-ink-500 hover:text-ink-700'
               }`}
             >
               Edit
@@ -240,7 +240,7 @@ export default function App() {
             <button
               onClick={() => setMobileTab('preview')}
               className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition-colors ${
-                mobileTab === 'preview' ? 'bg-white text-ink-800 shadow-sm' : 'text-ink-500'
+                mobileTab === 'preview' ? 'bg-cvblue-600 text-white shadow-sm' : 'text-ink-500 hover:text-ink-700'
               }`}
             >
               Preview
@@ -385,9 +385,6 @@ export default function App() {
           </div>
 
           <ScaledPreview data={data} Template={selectedTemplate.component} />
-          <p className="print-hidden mt-3 text-center text-xs text-ink-400">
-            Generated directly in your browser — nothing is ever uploaded.
-          </p>
         </div>
       </div>
     </div>
